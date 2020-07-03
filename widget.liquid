@@ -1,0 +1,154 @@
+<div style="border:1px solid grey" class="container">
+  <div style="" class="dots">
+    <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+  	<span class="step"></span>
+  	<span class="step"></span>
+  	<span class="step"></span>
+  	<span class="step"></span>
+  </div>
+  <div class="content">
+    <div class="tab">
+      <p>Intro</p>
+    </div>
+    <div class="tab">
+      <input type="radio" name="trad-type" value="agbada" id="agbada" >
+      <label for="agbada">agbada</label><br>
+      <input type="radio" name="trad-type" value="buba" >
+      <label for="buba">buba</label><br>
+    </div>
+    <div class="tab">
+      <p>where to pick trad option</p>
+    </div>
+    <div class="tab">
+      <p>where to customize trad</p>
+    </div>
+    <div>
+    	 <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .step {
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbbbbb;
+    border: none;
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0.5;
+  }
+  .container {
+    display:flex;
+    height:400px;
+  }
+  .dots{
+  	display:flex;
+    flex-direction:column;
+    width:10%;
+    justify-content:center;
+    align-items: center;
+    background-color: white;
+    position:relative;
+    border: 2px solid grey;
+  }
+  #prevBtn{
+  	position:absolute;
+    top:5px;
+  }
+  .content{
+  	width:90%;
+    position:relative;
+    background-color: #f8fdff;
+    padding:10px
+  }
+  #nextBtn {
+  	position:absolute;
+    color:white;
+    bottom:10px;
+    right:10px;
+    border: 1px solid #094074;
+    border-radius: 10px;
+    background-color: #094074;
+    padding:5px 15px
+  }
+  .tab {
+  display: none;
+}
+  /* Mark the active step: */
+.step.active {
+  opacity: 1;
+}
+
+/* Mark the steps that are finished and valid: */
+.step.finish {
+  background-color: #ee435d;
+}
+</style>
+
+<script>
+	var currentTab = 0; // Current tab is set to be the first tab (0)
+	showTab(currentTab); // Display the current tab
+  
+  function showTab(n) {
+  // This function will display the specified tab of the form ...
+  var x = document.getElementsByClassName("tab");
+  x[n].style.display = "block";
+  // ... and fix the Previous/Next buttons:
+  if (n == 0) {
+    document.getElementById("prevBtn").style.display = "none";
+  } else {
+    document.getElementById("prevBtn").style.display = "inline";
+  }
+  if (n == (x.length - 1)) {
+    document.getElementById("nextBtn").innerHTML = "Submit Order";
+  } else {
+    document.getElementById("nextBtn").innerHTML = "Next";
+  }
+  // ... and run a function that displays the correct step indicator:
+  fixStepIndicator(n)
+  //call this function when you finish
+  finish(n);
+   
+}
+  function nextPrev(n) {
+    document.getElementById("nextBtn").disabled=true
+  // This function will figure out which tab to display
+  var x = document.getElementsByClassName("tab");
+  // Exit the function if any field in the current tab is invalid:
+//   if (n == 1 && !validateForm()) return false;
+  // Hide the current tab:
+  x[currentTab].style.display = "none";
+  // Increase or decrease the current tab by 1:
+//     if(currentTab +n > currentTab){
+//     	finish(n);
+//     }
+  currentTab = currentTab + n;
+    
+  // if you have reached the end of the form... :
+  if (currentTab >= x.length) {
+    //...the form gets submitted: redirect to recharge checkout page
+    
+    return false;
+  }
+    
+  // Otherwise, display the correct tab:
+  showTab(currentTab);
+}
+  
+ function fixStepIndicator(n) {
+  // This function removes the "active" class of all steps...
+  var i, x = document.getElementsByClassName("step");
+  for (i = 0; i < x.length; i++) {
+    x[i].className = x[i].className.replace(" active", "");
+  }
+  //... and adds the "active" class to the current step:
+  x[n].className += " active";
+}
+  function finish(n) {
+  	 document.getElementsByClassName("step")[n].className += " finish";
+    document.getElementById("nextBtn").disabled=false
+   
+  }
+</script>
